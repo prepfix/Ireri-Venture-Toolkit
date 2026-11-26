@@ -1,7 +1,7 @@
 // IRERI VENTURE offline cache.
 // The app page is fetched fresh whenever you are online (so updates arrive on their own)
 // and falls back to the saved copy when you are offline.
-const CACHE = 'ireri-v8';
+const CACHE = 'ireri-v9';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-192.png', 'icons/icon-maskable-512.png', 'icons/favicon-64.png'];
 
 self.addEventListener('install', e => {
