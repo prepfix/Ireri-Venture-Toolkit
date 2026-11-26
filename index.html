@@ -65,6 +65,7 @@ h2.yh,h2.mh{display:flex;justify-content:space-between;gap:8px;cursor:pointer;us
 h2.yh{background:var(--nv);color:#fff;font-size:16px;border-left-color:var(--gd2)}
 h2.mh{margin-left:10px}
 .ms{font-size:12px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:-2px 4px 6px 16px}
+h2.yh:focus-visible,h2.mh:focus-visible{outline:3px solid var(--gd2);outline-offset:2px}
 .sn{display:inline-block;min-width:2.1em;color:var(--acx)}
 </style></head><body>
 <div id="sp" onclick="this.remove()"><img id="spi" alt=""><div class="t1">IRERI VENTURE</div><div class="t2">TOOLKIT</div><div class="t3">DEVELOPED BY CYRUS IRERI 0720872582</div></div>
@@ -119,17 +120,17 @@ const rows=()=>D.filter(x=>yr==='All'||x.y==yr),years=()=>[...new Set([...D.map(
 const opt=(a,v)=>a.map(o=>{const[k,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(k)}" ${String(k)===String(v)?'selected':''}>${esc(l)}</option>`}).join('');
 function go(){const T_=[['home','Home'],['sales','Sales'],['schools','Schools'],['money','Money'],['rep','Reports']];
  $('#nav').innerHTML=T_.map(t=>`<button class="${tab===t[0]?'on':''}" onclick="tab='${t[0]}';cur=null;W=null;X=null;go()">${t[1]}</button>`).join('');
- $('#sub').textContent=`Sales, income, expenses and debts · ${D.length} sales`;
+ $('#sub').textContent=`Sales, income, expenses and debts · ${D.length} sales · v4`;
  $('#v').innerHTML=W?form():X?mform():cur?stmt():({home,sales,schools,money,rep:reports})[tab]();if(W){sm();thumbs()}if(X&&X.kind==='led')lsm();if(X&&(X.kind==='tx'||X.kind==='ledm'))tsm();scrollTo(0,0)}
 function bars(o){const m=Math.max(1,...Object.values(o));return `<div class="tw"><table><tbody>${Object.entries(o).map(([k,v])=>`<tr><td style="width:28%">${k}</td><td class="n" style="width:34%">${f(v)}</td><td><div class="bar" style="width:${v/m*100}%;margin:0"></div></td></tr>`).join('')}</tbody></table></div>`}
-const FS={},isO=(k,d)=>k in FS?FS[k]:d,ar=o=>o?'▼':'▶';
+const FS={},isO=(k,d)=>k in FS?FS[k]:d,ar=o=>o?'▼︎':'▶︎';
 function tf(e){FS[e.dataset.k]=e.dataset.o!=='1';if(tab==='home')$('#bm').innerHTML=bym();else $('#lst').innerHTML=slist()}
 function grp(a,asc){const Y={},kk=(k,e)=>k==='~'?(asc?'9999':'0000'):k,cm=(p,q)=>asc?kk(p).localeCompare(kk(q)):kk(q).localeCompare(kk(p));
  a.forEach(x=>{const y=x.d?x.d.slice(0,4):'~',m=x.d?x.d.slice(0,7):'~',Yo=Y[y]=Y[y]||{y,v:0,c:0,M:{}},Mo=Yo.M[m]=Yo.M[m]||{k:m,v:0,c:0,L:[]};Yo.v+=x.a;Yo.c++;Mo.v+=x.a;Mo.c++;Mo.L.push(x)});
  return Object.values(Y).sort((p,q)=>(q.y==='~'?'0000':q.y).localeCompare(p.y==='~'?'0000':p.y)).map(Yo=>({...Yo,ML:Object.values(Yo.M).sort((p,q)=>cm(p.k,q.k))}))}
 const yl=y=>y==='~'?'No date':y,ml=m=>m==='~'?'No date':MN[+m.slice(5,7)-1];
 function bym(){const Y=grp(rows(),1);if(!Y.length)return '<small>No sales yet.</small>';const mx=Math.max(1,...Y.flatMap(y=>y.ML.map(o=>o.v)));
- return Y.map((Yo,i)=>{const k='hy'+Yo.y,o=isO(k,i===0);return `<h2 class="yh" data-k="${k}" data-o="${o?1:0}" onclick="tf(this)"><span>${ar(o)} ${yl(Yo.y)} · ${Yo.c} sale${Yo.c>1?'s':''}</span><span>${f(Yo.v)}</span></h2>`+(o?`<div class="tw"><table><tbody>${Yo.ML.map(q=>`<tr><td style="width:22%">${ml(q.k)}</td><td class="n" style="width:36%">${f(q.v)}</td><td><div class="bar" style="width:${q.v/mx*100}%;margin:0"></div></td></tr>`).join('')}</tbody></table></div>`:'')}).join('')}
+ return Y.map((Yo,i)=>{const k='hy'+Yo.y,o=isO(k,i===0);return `<h2 class="yh" data-k="${k}" data-o="${o?1:0}" onclick="tf(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tf(this)}"><span>${ar(o)} ${yl(Yo.y)} · ${Yo.c} sale${Yo.c>1?'s':''}</span><span>${f(Yo.v)}</span></h2>`+(o?`<div class="tw"><table><tbody>${Yo.ML.map(q=>`<tr><td style="width:22%">${ml(q.k)}</td><td class="n" style="width:36%">${f(q.v)}</td><td><div class="bar" style="width:${q.v/mx*100}%;margin:0"></div></td></tr>`).join('')}</tbody></table></div>`:'')}).join('')}
 function home(){const a=rows(),ct={},tm={};
  a.forEach(x=>{ct[G(x)]=(ct[G(x)]||0)+x.a;const t='Term '+(term(x.d)||'?');tm[t]=(tm[t]||0)+x.a});
  const ch=D.flatMap(x=>x.pay.map((p,i)=>({x,p,i}))).filter(o=>o.p.k&&!o.p.x).sort((a,b)=>a.p.k.localeCompare(b.p.k));
@@ -139,9 +140,9 @@ function home(){const a=rows(),ct={},tm={};
 function tg(id,i){const x=D.find(r=>r.id===id);x.pay[i].x=1;save();go()}
 function card(x){const cq=x.pay.filter(p=>p.c).map(p=>p.c).join(', ');return `<div class="gc" onclick="ed(${x.id})"><b>${esc(x.s)}</b><b class="rt">${f(x.a)}</b><small>${fd(x.d)||'No date'} · ${esc(x.i)}${x.v?' · #'+esc(x.v):''}${cq?' · Cheque '+esc(cq):''}${x.im&&x.im.length?' · Photos '+x.im.length:''}</small><span class="rt">${bal(x)>0?`<span class="t red">Owes ${f(bal(x))}</span>`:'<span class="t grn">Paid</span>'}</span>${x.n?`<small class="w">${esc(x.n)}</small>`:''}</div>`}
 function slist(){const q=Q.toLowerCase(),a=rows().filter(x=>(st==='all'||(st==='owed')===(bal(x)>0))&&(pf==='All'||G(x)===pf)&&(x.s+x.i+x.v).toLowerCase().includes(q)),Y=grp(a),fo=!!Q;
- return `<div class="tot"><span>${a.length} shown</span><b>${f(sum(a,'a'))}</b></div>`+(Y.length?Y.map((Yo,i)=>{const k='sy'+Yo.y,o=fo||isO(k,i===0);
-  return `<h2 class="yh" data-k="${k}" data-o="${o?1:0}" onclick="tf(this)"><span>${ar(o)} ${yl(Yo.y)} · ${Yo.c} sale${Yo.c>1?'s':''}</span><span>${f(Yo.v)}</span></h2>`+(o?Yo.ML.map(M_=>{const k2='sm'+M_.k,o2=fo||isO(k2,true),L=M_.L.sort((p,r)=>(r.d||'0').localeCompare(p.d||'0'));
-   return `<h2 class="mh" data-k="${k2}" data-o="${o2?1:0}" onclick="tf(this)"><span>${ar(o2)} ${ml(M_.k)} ${Yo.y!=='~'?Yo.y:''} · ${M_.c} sale${M_.c>1?'s':''}</span><span>${f(M_.v)}</span></h2>`+(o2?L.map(card).join(''):`<div class="ms">${esc([...new Set(L.map(x=>x.s+' – '+x.i))].join('; '))}</div>`)}).join(''):'')}).join(''):'<small>No sales match.</small>')}
+ return `<div class="tot"><span>${a.length} shown</span><b>${f(sum(a,'a'))}</b></div>`+(Y.length?Y.map((Yo,i)=>{const k=(fo?'qsy':'sy')+Yo.y,o=isO(k,fo||i===0);
+  return `<h2 class="yh" data-k="${k}" data-o="${o?1:0}" onclick="tf(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tf(this)}"><span>${ar(o)} ${yl(Yo.y)} · ${Yo.c} sale${Yo.c>1?'s':''}</span><span>${f(Yo.v)}</span></h2>`+(o?Yo.ML.map(M_=>{const k2=(fo?'qsm':'sm')+M_.k,o2=isO(k2,true),L=M_.L.sort((p,r)=>(r.d||'0').localeCompare(p.d||'0'));
+   return `<h2 class="mh" data-k="${k2}" data-o="${o2?1:0}" onclick="tf(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tf(this)}"><span>${ar(o2)} ${ml(M_.k)} ${Yo.y!=='~'?Yo.y:''} · ${M_.c} sale${M_.c>1?'s':''}</span><span>${f(M_.v)}</span></h2>`+(o2?L.map(card).join(''):`<div class="ms">${esc([...new Set(L.map(x=>x.s+' – '+x.i))].join('; '))}</div>`)}).join(''):'')}).join(''):'<small>No sales match.</small>')}
 function sales(){return `<div class="r"><button class="b" onclick="nw()">+ New sale</button></div><div class="r"><select onchange="yr=this.value;go()"><option value="All">All years</option>${opt(years(),yr)}</select><select onchange="pf=this.value;go()">${opt([['All','All products/services'],...CATS],pf)}</select></div><div class="r"><input placeholder="Search school or item" value="${esc(Q)}" oninput="Q=this.value;$('#lst').innerHTML=slist()"><select onchange="st=this.value;go()">${opt([['all','All'],['owed','Owing'],['paid','Paid']],st)}</select></div><div id="lst">${slist()}</div>`}
 const np=()=>({a:'',d:T(),m:'Cash',c:'',k:'',ac:''});
 function nw(){W={y:new Date().getFullYear(),s:'',d:T(),i:'',v:'',a:0,p:0,n:'',g:'',pay:[],im:[],_new:[],_rm:[]};SC='';P=np();tab='sales';go()}

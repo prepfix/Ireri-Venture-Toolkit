@@ -1,7 +1,7 @@
 // IRERI VENTURE offline cache.
 // The app page is fetched fresh whenever you are online (so updates arrive on their own)
 // and falls back to the saved copy when you are offline.
-const CACHE = 'ireri-v3';
+const CACHE = 'ireri-v4';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/favicon-64.png'];
 
 self.addEventListener('install', e => {
@@ -20,7 +20,7 @@ self.addEventListener('fetch', e => {
     // network first (3s), then saved copy
     e.respondWith(new Promise(res => {
       const t = setTimeout(() => caches.match(r, {ignoreSearch: true}).then(m => m && res(m)), 3000);
-      fetch(r).then(n => {
+      fetch(r, {cache: 'no-cache'}).then(n => {
         clearTimeout(t);
         const copy = n.clone();
         caches.open(CACHE).then(c => c.put(r, copy));
